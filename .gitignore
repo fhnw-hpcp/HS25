@@ -205,3 +205,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# HPCP
+*/profiling/*
+*.ncu-rep
+*.nsys-rep
+*.sqlite
