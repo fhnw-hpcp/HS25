@@ -1,61 +1,87 @@
 from dataclasses import dataclass, field
+from collections import defaultdict
 
+import cupy
 import numpy as np
 from numba import cuda, float32, config
 
 config.CUDA_ENABLE_PYNVJITLINK = 1
 
+
 @dataclass
 class GPUMatrixProcessor:
-  matrixA: np.ndarray = field(init=False)
-  matrixB: np.ndarray = field(init=False)
-  matrixC: np.ndarray = field(init=False)
-  d_matrixA: np.ndarray = field(init=False)
-  d_matrixB: np.ndarray = field(init=False)
-  d_matrixC: np.ndarray = field(init=False)
+  data: dict[str, dict[str, np.ndarray]] = field(default_factory=lambda: defaultdict(dict))
   validation: np.ndarray = field(init=False)
+  matrix_size: int = 2048
+  benchmark: dict[str, dict[int, float]] = field(default_factory=lambda: defaultdict(dict))
   start: cuda.event = field(default_factory=cuda.event)
   end: cuda.event = field(default_factory=cuda.event)
   implementations: dict[str, callable] = field(default_factory=dict)
+  implementations_mem_type: dict[str, str] = field(default_factory=dict)
 
   def __post_init__(self):
-    self.matrixA = np.random.rand(2048, 2048).astype(np.float32)
-    self.matrixB = np.random.rand(2048, 2048).astype(np.float32)
-    self.matrixC = np.zeros((2048, 2048), dtype=np.float32)
-    self.d_matrixA = cuda.to_device(self.matrixA)
-    self.d_matrixB = cuda.to_device(self.matrixB)
-    self.d_matrixC = cuda.to_device(self.matrixC)
-    self.validation = np.dot(self.matrixA, self.matrixB)
+    self.create_data(self.matrix_size)
 
-  def add_implementation(self, func: callable):
-    """Adds a new implementation to the processor."""
+  def create_data(self, size: int):
+    """Creates random matrices of given size."""
+    self.matrix_size = size
+    for matrix in ["A", "B", "C"]:  # Remove previous matrices for proper GC on the GPU
+      [self.data[matrix].pop(mem, None) for mem in ["cpu", "cuda", "cupy"]]
+    
+    self.data["A"]["cpu"] = np.random.rand(self.matrix_size, self.matrix_size).astype(np.float32)
+    self.data["B"]["cpu"] = np.random.rand(self.matrix_size, self.matrix_size).astype(np.float32)
+    self.data["C"]["cpu"] = np.zeros((self.matrix_size, self.matrix_size), dtype=np.float32)
+    for matrix in ["A", "B", "C"]:
+      self.data[matrix]["cuda"] = cuda.to_device(self.data[matrix]["cpu"])
+      self.data[matrix]["cupy"] = cupy.asarray(self.data[matrix]["cuda"])
+    # Create validation data using numpy 
+    self.validation = np.dot(self.data["A"]["cpu"], self.data["B"]["cpu"])
+
+  def add_implementation(self, func: callable, mem_type: str):
+    """Adds a new implementation to the processor - need to specify which type of memory to use (cpu, cuda, cupy)."""
+    if mem_type not in ["cpu", "cuda", "cupy"]:
+      raise ValueError("Memory type must be one of: 'cpu', 'cuda', 'cupy'.")
     self.implementations[func.__name__] = func
+    self.implementations_mem_type[func.__name__] = mem_type
 
   def run_timed_cuda(self, func: callable, *args):
-    """Runs a CUDA function and times its execution using events."""
+    """Runs a CUDA function and times its execution using CUDA events."""
     self.start.record()
     func(*args)
     self.end.record()
     self.end.synchronize()
-    elapsed_time = cuda.event_elapsed_time(self.start, self.end)
-    return elapsed_time
+    return cuda.event_elapsed_time(self.start, self.end)
 
-  def run_implementation(self, name: str, validate: bool = False, mean_time = True):
+  def run_timed_cpu(self, func: callable, *args):
+    """Runs a CPU function and times its execution using time module."""
+    start = time.perf_counter_ns()
+    func(*args)
+    end = time.perf_counter_ns()
+    return (end - start) / 1e6  # Convert to milliseconds
+
+  def run_implementation(self, name: str, validate: bool = False, mean_time = True, silent=False):
     """Multiplies matrixA and matrixB using specified implementation."""
     func = self.implementations.get(name, None)
     if func is None:
       print(f"Implementation '{name}' not found.")
       return
     
-    kernel_ms = self.run_timed_cuda(func, self.d_matrixA, self.d_matrixB, self.d_matrixC, 2048)
+    mem = self.implementations_mem_type[name]
+    run_function = self.run_timed_cpu if mem == "cpu" else self.run_timed_cuda
+    kernel_ms = run_function(func, self.data["A"][mem], self.data["B"][mem], self.data["C"][mem], self.matrix_size)
     if validate:
-      self.d_matrixC.copy_to_host(self.matrixC)
-      if not np.allclose(self.matrixC, self.validation):
+      if mem in ["cuda", "cupy"]:
+        self.data["C"]["cuda"].copy_to_host(self.data["C"]["cpu"])
+      if not np.allclose(self.data["C"]["cpu"], self.validation):
         print(f"Validation of {name} failed: Result does not match expected output.")
-    print(f"First execution of {name} took: {kernel_ms:.3f}ms.")
+    if not silent:
+      print(f"First execution of {name} took: {kernel_ms:.3f}ms.")
     if mean_time:
-      t_mean = np.mean([self.run_timed_cuda(func, self.d_matrixA, self.d_matrixB, self.d_matrixC, 2048) for _ in range(10)])
-      print(f"Mean execution time of {name} is: {t_mean:.3f}ms.")
+      t_mean = np.mean([run_function(func, self.data["A"][mem], self.data["B"][mem], self.data["C"][mem], self.matrix_size) for _ in range(5)])
+      self.benchmark[name][self.matrix_size] = t_mean
+      if not silent:
+          print(f"Mean execution time of {name} is: {t_mean:.3f}ms.")
+
 
 
 

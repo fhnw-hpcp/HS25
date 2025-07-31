@@ -1,9 +1,6 @@
 # High Performance Computing in Practice - HS25
 Welcome to the HPCP block module! This repository is organized to mirror the course structure, with a dedicated directory for each day.
 
-## Course Overview
-
-**HPC Summer School – High Performance Computing in Practice**  
 This summer school targets advanced students and researchers seeking a hands-on introduction to modern High Performance Computing (HPC) methods. The course consists of four full-day modules:
 
 - **Day 1 – From vanilla Python to HPC Python:**  
