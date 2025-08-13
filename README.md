@@ -17,7 +17,7 @@ This summer school targets advanced students and researchers seeking a hands-on 
     |  13:00 |  Lunch |  
     |  14:00 |  Numpy (MS) |  
     |  15:00 |  JAX (MS) |  
-    |  16:15 |  Break | 
+    |  16:00 |  Break | 
     |  16:15 |  Python Bindings (MS) |  
     |  17:00 |  Python Bindings (MS)  | 
 
@@ -34,7 +34,7 @@ This summer school targets advanced students and researchers seeking a hands-on 
     |  13:00 |  Lunch |  
     |  14:00 |  Talk: Fast feedback indexer (HC) |  
     |  15:00 |  Python CUDA Ecosystem |  
-    |  16:15 |  Break | 
+    |  16:00 |  Break | 
     |  16:15 |  Python CUDA Ecosystem |  
     |  17:40 |  Wrap-Up  | 
     |  18:00 |  Apéro together with new AI&HPC students  | 
@@ -48,11 +48,11 @@ This summer school targets advanced students and researchers seeking a hands-on 
     |  10:00 |  HPC cluster 101 (MC) | 
     |  11:00 |  Break | 
     |  11:15 |  How to use Slurm (HC) | 
-    |  12:00 |  How to use Slurm (HC) |   
+    |  12:00 |  Talk: PSI SDSC |   
     |  13:00 |  Lunch |  
     |  14:00 |  MPI4PY (AS) |  
     |  15:00 |  MPI4PY (MC) |  
-    |  16:15 |  Break | 
+    |  16:00 |  Break | 
     |  16:15 |  MPI4PY (MC) |  
     |  17:00 |  Guided Tour | 
 
@@ -62,7 +62,7 @@ This summer school targets advanced students and researchers seeking a hands-on 
 
     | @PSI Villigen: | PSI Bildungszentrum |
     | -------- | ------- |
-    |  09:15 |  Talk: PSI SDSC | 
+    |  09:15 |  Dask (SM?) | 
     |  10:00 |  Dask (SM?) | 
     |  11:00 |  Break | 
     |  11:15 |  Multi-GPU and MPI (SM) | 
@@ -70,7 +70,7 @@ This summer school targets advanced students and researchers seeking a hands-on 
     |  13:00 |  Lunch |  
     |  14:00 |  Talk: Euclid HPC framework (SM) |  
     |  15:00 |  Shared File Systems (SM) |  
-    |  16:15 |  Break | 
+    |  16:00 |  Break | 
     |  16:15 |  Shared File Systems (SM) |  
     |  17:00 |  Wrap-Up | 
 
