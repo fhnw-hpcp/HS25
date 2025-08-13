@@ -51,9 +51,9 @@ This summer school targets advanced students and researchers seeking a hands-on 
     |  12:00 |  Talk: PSI SDSC |   
     |  13:00 |  Lunch |  
     |  14:00 |  MPI4PY (AS) |  
-    |  15:00 |  MPI4PY (MC) |  
+    |  15:00 |  MPI4PY (AS) |  
     |  16:00 |  Break | 
-    |  16:15 |  MPI4PY (MC) |  
+    |  16:15 |  MPI4PY (AS) |  
     |  17:00 |  Guided Tour | 
 
 
