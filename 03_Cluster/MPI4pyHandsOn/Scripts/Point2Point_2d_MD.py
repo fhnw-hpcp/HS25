@@ -10,10 +10,12 @@ metaDataTag = 14
 if rank == 0:
     #We emulate a (small) detector image, typically rank 0 would load it from file
     #Hence only rank 0 knows its size (might be varying). Datatype is assumed fixed
-    imageSize = 50 #this information would e.g be derived from hdf5 metadata of image directly
+    imageSize = 3 #this information would e.g be derived from hdf5 metadata from image directly
+    #imageSize = 50 #Deadlocks, but this is implementation dependent
     detImage_2BeSent = np.arange(imageSize**2, dtype=np.int64).reshape(imageSize,imageSize)
     #Send data first
     comm.Send(detImage_2BeSent, dest=1, tag=dataTag)
+    #comm.Ssend(detImage_2BeSent, dest=1, tag=dataTag) #Deadlocks
     print ("0 sent:\n", detImage_2BeSent)
     #Send Meta data (we could also send an int here, but for a non quadratic image would be an array)
     comm.Send(np.array(imageSize, dtype=np.int64), dest=1, tag=metaDataTag)
