@@ -13,7 +13,7 @@ nc = 200
 nh = nr//2
 bitDepth = 8
 
-np.random.seed(21)
+np.random.seed(21) #Commen this line, unit test fails
 detectorImage = np.random.randint(2**bitDepth, size=(nr, nc)).astype(np.float64)
 
 
