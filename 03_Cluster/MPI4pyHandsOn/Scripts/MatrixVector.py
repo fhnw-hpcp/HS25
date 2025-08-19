@@ -8,7 +8,7 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
 
-matrixSize = 8 #Square matrix
+matrixSize = 4 #Square matrix
 matrixRowsPerRank = matrixSize//size
 vectorLength = matrixSize #Mandatory for well defined multiplication
 
