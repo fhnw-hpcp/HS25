@@ -15,10 +15,10 @@ This summer school targets advanced students and researchers seeking a hands-on 
     |  11:15 |  Numpy (MS) | 
     |  12:00 |  Numpy (MS) |   
     |  13:00 |  Lunch |  
-    |  14:00 |  Numpy (MS) |  
-    |  15:00 |  JAX (MS) |  
+    |  14:00 |  JAX (MS) |  
+    |  15:00 |  Numba (MS) |  
     |  16:00 |  Break | 
-    |  16:15 |  Python Bindings (MS) |  
+    |  16:15 |  Numba (MS) |  
     |  17:00 |  Python Bindings (MS)  | 
 
 - **Day 2 – Using GPUs to accelerate your code:**  
