@@ -32,6 +32,10 @@ else:
 comm.Gather(detectorImageSliceFiltered, detectorImageFiltered, root=0)
 
 if rank == 0:
-    print ("Parallel computation equals sequential :", np.allclose(laplace(detectorImage, mode='constant', cval=0), detectorImageFiltered))
-
+    hasUTpassed = np.allclose(laplace(detectorImage, mode='constant', cval=0), detectorImageFiltered)
+    print ("Parallel computation equals sequential :", hasUTpassed)
+    if not hasUTpassed:
+        import matplotlib.pyplot as plt
+        plt.imshow(laplace(detectorImage, mode='constant', cval=0) - detectorImageFiltered)
+        plt.show()
 
