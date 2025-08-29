@@ -62,12 +62,13 @@ This summer school targets advanced students and researchers seeking a hands-on 
 
     | 02.09.2025 | @PSI Bildungszentrum |
     | -------- | ------- |
-    |  09:15 |  Dask (SM?) | 
-    |  10:00 |  Dask (SM?) | 
+    |  09:15 |  Dask (SM) | 
+    |  10:00 |  Dask (SM) | 
     |  11:00 |  Break | 
     |  11:15 |  Multi-GPU and MPI (SM) | 
     |  12:00 |  Student Project (SM) |   
-    |  13:00 |  Lunch |  
+    |  13:00 |  Lunch |
+    |  13:50 |  Move to PSI West Auditorium (until end of the day) |
     |  14:00 |  Talk: Euclid HPC framework (SM) |  
     |  15:00 |  Shared File Systems (SM) |  
     |  16:00 |  Break | 
