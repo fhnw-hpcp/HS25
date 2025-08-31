@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH --job-name=example4
+#SBATCH --ntasks=88
+#SBATCH --hint=multithread
+#SBATCH --partition=hourly
+#SBATCH --output=logs/%x.out
+#SBATCH --error=logs/%x.out
+
+for i in {1..880}
+do
+  srun -N1 -n1 -c1 --exclusive get_cpu/get_cpu &
+done
+wait

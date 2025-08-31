@@ -1,0 +1,21 @@
+#!/bin/bash
+#SBATCH --job-name=example2
+#SBATCH --nodes=2
+#SBATCH --ntasks=8
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=2
+#SBATCH --mem-per-cpu=8G
+#SBATCH --hint=multithread
+#SBATCH --dependency=singleton
+#SBATCH --time=00:05:00
+#SBATCH --partition=hourly
+#SBATCH --output=logs/%x.out
+#SBATCH --error=logs/%x.out
+
+echo -e "\n> Execute ./get_cpu"
+srun get_cpu/get_cpu | sort -k6n
+
+export SACCT_FORMAT="JobId%20,JobName%15,Partition%15,Account,State,ExitCode,AllocTRES%40,NodeList%20"
+
+srun -N 1 -n 1 -c 1 echo -e "\n> sacct -j $SLURM_JOBID"
+srun -N 1 -n 1 -c 1 sacct -j $SLURM_JOBID
