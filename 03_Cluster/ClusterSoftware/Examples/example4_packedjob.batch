@@ -6,6 +6,17 @@
 #SBATCH --output=logs/%x.out
 #SBATCH --error=logs/%x.out
 
+# Load modules
+echo -e "\n> Load software modules"
+module load gcc/14.2.0 openmpi/4.1.6_slurm
+module list
+
+# Compile get_cpu if missing
+if ! command -v get_cpu/get_cpu &> /dev/null; then
+  echo -e "\n> Compiling get_cpu/get_cpu"
+  make -C get_cpu
+fi
+
 for i in {1..880}
 do
   srun -N1 -n1 -c1 --exclusive get_cpu/get_cpu &
