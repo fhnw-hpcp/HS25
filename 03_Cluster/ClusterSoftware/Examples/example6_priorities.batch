@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH --job-name=example6
+#SBATCH --nodes=1
+#SBATCH --ntasks=11
+#SBATCH --hint=nomultithread
+#SBATCH --reservation=sschool25_2nodes
+#SBATCH --output=logs/%x/%j.out
+
+echo "Host(s): $(hostname)"
+echo "Start:   $(date '+%F %T')"
+echo "User:    $USER"
+echo "JobID:   $SLURM_JOB_ID"
+echo "Part:    $SLURM_JOB_PARTITION"
+echo "Nodes:   $SLURM_JOB_NUM_NODES  Tasks: $SLURM_NTASKS"
+
+# Minimal work
+sleep "${SLEEP_SECS:-120}"
+echo "End:     $(date '+%F %T')"
