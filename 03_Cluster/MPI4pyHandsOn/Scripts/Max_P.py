@@ -36,5 +36,6 @@ global_max = comm.reduce(local_max, op=MPI.MAX, root=0)
 
 # Print the global maximum on the root process
 if rank == 0:
-    print(f"Time to find maximum: {time.time() - start_time} sec")
+    end_time = time.time()
+    print(f"Time to find maximum: {end_time - start_time} sec")
     print(f"Global maximum: {global_max:}")

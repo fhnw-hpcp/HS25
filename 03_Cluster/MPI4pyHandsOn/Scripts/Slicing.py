@@ -11,8 +11,10 @@ n = 10
 
 assert n % 2 == 0
 
+doTestReceiverSlicing = False
+
 if rank == 0:
-    doReallocate = False
+    doReallocate = True
     data = np.arange(n)
     if doReallocate:
         comm.Send(np.copy(data[::2]), dest=1, tag=13)
@@ -22,11 +24,22 @@ if rank == 0:
         comm.Send(data[1::2], dest=2, tag=13)
     print ("0 sent to 1:", data[::2])
     print ("0 sent to 2:", data[1::2])
-elif rank == 1:
-    data = np.empty(n//2, dtype=np.int64)
-    comm.Recv(data, source=0, tag=13)
-    print ("1 recvd:", data)
+
+if not doTestReceiverSlicing:
+    if rank == 1:
+        data = np.empty(n//2, dtype=np.int64)
+        comm.Recv(data, source=0, tag=13)
+        print ("1 recvd:", data)
+    if rank == 2:
+        data = np.empty(n//2, dtype=np.int64)
+        comm.Recv(data, source=0, tag=13)
+        print ("2 recvd:", data)
 else:
-    data = np.empty(n//2, dtype=np.int64)
-    comm.Recv(data, source=0, tag=13)
-    print ("2 recvd:", data)
+    if rank == 1:
+        data = np.empty(n, dtype=np.int64)
+        comm.Recv(data[::2], source=0, tag=13)
+        print ("1 recvd:", data)
+    if rank == 2:
+        data = np.empty(n, dtype=np.int64)
+        comm.Recv(data[1::2], source=0, tag=13)
+        print ("2 recvd:", data)
