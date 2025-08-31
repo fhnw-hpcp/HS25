@@ -11,13 +11,13 @@
 #SBATCH --output=logs/%x.out
 #SBATCH --error=logs/%x.out
 
-echo -e "\n> Execute ./get_cpu"
+echo -e "\n> Execute get_cpu/get_cpu"
 srun get_cpu/get_cpu | sort -k6n
 
 export SACCT_FORMAT="JobId%20,JobName%15,Partition%15,Account,State,ExitCode,AllocTRES%40,NodeList%20"
 
 echo -e "\n> srun with warning"
-srun -n 1 -c 1 echo "sacct -j $SLURM_JOBID"
+srun -n 1 -c 1 echo "SACCT_FORMAT=$SACCT_FORMAT sacct -j $SLURM_JOBID"
 
 echo -e "\n> srun with fixed -N"
 srun -N 1 -n 1 -c 1 sacct -j $SLURM_JOBID

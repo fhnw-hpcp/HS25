@@ -17,5 +17,5 @@ srun get_cpu/get_cpu | sort -k6n
 
 export SACCT_FORMAT="JobId%20,JobName%15,Partition%15,Account,State,ExitCode,AllocTRES%40,NodeList%20"
 
-srun -N 1 -n 1 -c 1 echo -e "\n> sacct -j $SLURM_JOBID"
+srun -N 1 -n 1 -c 1 echo -e "\n> SACCT_FORMAT=$SACCT_FORMAT sacct -j $SLURM_JOBID"
 srun -N 1 -n 1 -c 1 sacct -j $SLURM_JOBID

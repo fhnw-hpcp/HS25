@@ -2,16 +2,21 @@
 #SBATCH --job-name=example5
 #SBATCH --nodes=1
 #SBATCH --ntasks=2
-#SBATCH --gpus=a5000:1
-#SBATCH --time=00:05:00
-#SBATCH --partition=hourly
+#SBATCH --gpus=A5000:2
+#SBATCH --time=00:30:00
+#SBATCH --cluster=gmerlin6
+#SBATCH --reservation=psicourse01
+#SBATCH --partition=gpu-short
 #SBATCH --output=logs/%x.out
 #SBATCH --error=logs/%x.out
 
-srun echo $CUDA_VISIBLE_DEVICES
-srun nvidia-smi -topo
+echo -e "\n> Run echo \$CUDA_VISIBLE_DEVICES"
+echo $CUDA_VISIBLE_DEVICES
 
-export SACCT_FORMAT="JobId%20,JobName%15,Partition%15,Account,State,ExitCode,AllocTRES%40,NodeList%20"
+echo -e "\n> Run 'nvidia-smi topo -m'"
+nvidia-smi topo -m
 
-echo "sacct -j $SLURM_JOBID"
+export SACCT_FORMAT="JobId%20,JobName%15,Partition%15,Account,State,ExitCode,AllocTRES%60,NodeList%20"
+
+echo -e "\n> SACCT_FORMAT=$SACCT_FORMAT sacct -M gmerlin6 -j $SLURM_JOBID"
 sacct -j $SLURM_JOBID
