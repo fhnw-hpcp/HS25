@@ -43,7 +43,7 @@ What matters is to apply a proper engineering workflow:
 
 ## Environment
 
-Start your work on pub030.cs.technik.fhnw.ch.
+Start your work on [pub030.cs.technik.fhnw.ch](pub030.cs.technik.fhnw.ch).
 
 If you require access to the FHNW Slurm Cluster, write an Email to [Manuel Stutz](mailto:manuel.stutz@fhnw.ch) and send your ed25519 public key to him. 
 
