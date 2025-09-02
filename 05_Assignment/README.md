@@ -7,9 +7,10 @@ a scientific application written in Python with heavy use of NumPy.
 
 ## Scientific Background
 
-The input to DEMREG consists of solar images from NASA’s SDO (Solar Dynamics Observatory).  
-Each observation provides six images, each taken at a different wavelength.
+The input to DEMREG consists of solar images from NASA’s Atmospheric Imaging Assembly (AIA) camera on board the Solar Dynamics Observatory (SDO).
+This camera captures a full-disc image of the sun every 12 seconds in ten different wavelengths which give insight into the processes inside the solar atmosphere and the solar surface. 
 
+For this project, six of those ten wavelengths are used because they give the best insight into the temperature of the sun.
 For each pixel across these 6 bands, the code reconstructs the temperature distribution of the solar plasma.  
 The result is a temperature map of the Sun derived from overlapping pixel intensities.
 
@@ -17,7 +18,7 @@ The result is a temperature map of the Sun derived from overlapping pixel intens
 
 Full disk images of AIA in wavelenght 193Å (left), 131Å (right)
 
-- A full image has a resolution of 4k × 4k pixels.  
+- A full image has a resolution of 4096 × 4096 pixels.  
 - Computing the DEMREG solution for every pixel with plain Python/NumPy is extremely slow.  
 - Since the problem is embarrassingly parallel, it can be accelerated with HPC techniques.  
 - An even more challenging extension is to analyze a time series of images.
@@ -40,6 +41,14 @@ What matters is to apply a proper engineering workflow:
 
 ---
 
+## Environment
+
+Start your work on pub030.cs.technik.fhnw.ch.
+
+If you require access to the FHNW Slurm Cluster, write an Email to [Manuel Stutz](mailto:manuel.stutz@fhnw.ch) and send your ed25519 public key to him. 
+
+> Note: To generate an ed25519 key, use the following command: `ssh-keygen -t ed25519`. 
+
 ## Assessment and Grading
 
 - 30% — Entry test (already fixed)  
@@ -53,7 +62,7 @@ What matters is to apply a proper engineering workflow:
 
 ## Group Work
 
-You may work in groups of up to 4 students.  
+You may work in groups of 2 to 4 students.  
 - A group of 2 must implement at least 2 different strategies.  
 - A group of 4 must implement at least 4 different strategies.  
 
